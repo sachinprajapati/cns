@@ -20,12 +20,12 @@ def Homepage(request):
 		}
 	dt = timezone.localtime()
 	context = DataReport(dt.date())
-	data = context['data']
-	print("total count: ", len(data))
-	context['tcount'] = len(data)
-	context['data'] = data[:len(data)%10]
-	context['count'] = len(data)-len(context['data'])
-	context['content'] = DataReport(dt.date())
+	if context:
+		data = context['data']
+		print("total count: ", len(data))
+		context['tcount'] = len(data)
+		context['data'] = data[len(data)-len(data)%10:]
+		context['count'] = len(data)-len(context['data'])
 	return render(request, "index.html", context)
 
 def Reports(request):
@@ -46,7 +46,7 @@ def Procces(request):
 def getStatus(request):
 	dt = timezone.localtime()
 	data = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).order_by("-dt")
-	print("total count: ", len(data))
+	print("total count: ", len(data), data)
 	d = data[:len(data)%10]
-	data = json.loads(serializers.serialize("json", d, fields=('dt','hold')))
+	data = json.loads(serializers.serialize("json", d))
 	return JsonResponse({"data": [i['fields'] for i in data]})
