@@ -38,11 +38,12 @@ def Exact(st):
 
 def DataReport(dt):
     context = {}
-    data = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).order_by("-dt")
+    data = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).order_by("dt")
+    if len(data) == 0:
+        return {}
     context["data"] = data
     context["rej"] = data.filter(status=0).count()
-    passed = data.filter(status=1).count()
-    context["passed"] = passed
+    context["passed"] = data.filter(status=1).count()
     context["f_arc"] = data.filter(arc=0).count()
     context["f_cont"] = data.filter(cont=0).count()
     context["f_hold"] = data.filter(hold=0).count()
