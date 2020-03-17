@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<br/>
+
+{% if form %}
+    <main class="login-form">
+        <div class="cotainer">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">Register</div>
+                            <div class="card-body">
+                                <form action="" method="post">
+                                	{% csrf_token %}
+                                    <div class="form-group row">
+                                        <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+                                        <div class="col-md-6">
+                                            <input type="date" id="email_address" class="form-control" name="date" required autofocus>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 offset-md-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            Submit
+                                        </button>
+                                    </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% else %}
+	<div class="alert alert-success" role="alert">
+	  Successfully Mail Send
+	</div>
+{% endif %}
+<br>
+<div class="text-center">
+  <a href="{% url 'users:reports' %}"><button type="button" class="btn btn-primary btn-sm active">Reports</button></a>
+  <a href="{% url 'users:homepage' %}"><button type="button" class="btn btn-primary btn-sm">Receive Data</button></a>
+  <a href="{% url 'users:report-mail' %}"><button type="button" disabled="" class="btn btn-primary btn-sm">Report Mail</button></a>
+</div>
+{% endblock %}

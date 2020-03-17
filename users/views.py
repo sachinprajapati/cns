@@ -6,6 +6,9 @@ from datetime import datetime
 from django.core import serializers
 from django.db.models import Count
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 from users.models import Data
 from users.funcs import *
@@ -59,3 +62,23 @@ def getStatus(request):
 	print("total count: ", len(data), len(d))
 	last_data = json.loads(serializers.serialize("json", d))
 	return JsonResponse({"data": [i['fields'] for i in last_data], "tcount": len(data)-len(d)+1})
+
+def ReportsMail(request):
+	context = {}
+	context["form"] = True
+	if request.method == 'POST':
+		dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d").date()
+		report = DataReport(dt)
+		report["dt"] = dt
+		msg_html = render_to_string('email.html', report)
+		plain_message = strip_tags(msg_html)
+		send_mail(
+		    'Daily Production Report',
+		    plain_message,
+		    'billgates@gmail.com',
+		    ['gaganguptaj@gmail.com'],
+		    fail_silently=False,
+		    html_message=msg_html
+		)
+		context["form"] = False	
+	return render(request, "reportmail.html", context)

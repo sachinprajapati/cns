@@ -1,12 +1,65 @@
-Date :- {{ dt }}
-Total is: {{ data|length }}
-ARC Fail :- {{ f_arc }}
-Cont Fail: {{ h_cont }}
-Hold Fail :- {{ f_hold }}
-Trip Fail : {{ f_trip }}
-KNR Fail :- {{ f_knr }}
-HV Fail : {{ f_hv }}
-Total Fail :- {{ rej }}
-Total Pass: {{ passed }}
-Rejection Rate % :- {{ rej_rate }}
-Passed Rate % :- {{ pass_rate }}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<table id="customers">
+  <thead class="thead-dark">
+	  <tr>
+	    <th scope="col">Date & Time</th>
+	    <th scope="col">Count</th>
+	    <th scope="col">ARC Fail</th>
+	    <th scope="col">Cont Fail</th>
+	    <th scope="col">Hold Fail</th>
+	    <th scope="col">Trip Fail</th>
+	    <th scope="col">KNR Fail</th>
+	    <th scope="col">HV Fail</th>
+	    <th scope="col">Total Fail</th>
+	    <th scope="col">Total Pass</th>
+	    <th scope="col">% Rejection</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td>{{ dt }}</td>
+	    <td>{{ data|length }}</td>
+	    <td>{{ f_arc }}</td>
+	    <td>{{ f_cont }}</td>
+	    <td>{{ f_hold }}</td>
+	    <td>{{ f_trip }}</td>
+	    <td>{{ f_knr }}</td>
+	    <td>{{ f_hv }}</td>
+	    <td>{{ rej }}</td>
+	    <td>{{ passed }}</td>
+	    <td>{{ rej_rate }}</td>
+	  </tr>
+	</tbody>
+</table>
+
+</body>
+</html>
