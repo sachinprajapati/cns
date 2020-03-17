@@ -27,7 +27,6 @@ def Homepage(request):
 		context['tcount'] = len(data)
 		context['data'] = data[len(data)-len(data)%10:]
 		context['count'] = len(data)-len(context['data'])
-		context['start_ind'] = len(data)-len(data)%10+1
 		print(context)
 	return render(request, "index.html", context)
 
@@ -54,9 +53,9 @@ def Procces(request):
 def getStatus(request):
 	dt = timezone.localtime()
 	data = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).order_by("-dt")
-	print("total count: ", len(data))
 	d = data[:len(data)%10]
-	if d == 0 and len(data) > 10:
+	if len(data)%10 == 0 and len(data) > 10:
 		d = data[:10]
-	data = json.loads(serializers.serialize("json", d))
-	return JsonResponse({"data": [i['fields'] for i in data], "count": len(d)})
+	print("total count: ", len(data), len(d))
+	last_data = json.loads(serializers.serialize("json", d))
+	return JsonResponse({"data": [i['fields'] for i in last_data], "tcount": len(data)-len(d)})

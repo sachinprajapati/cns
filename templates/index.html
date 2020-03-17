@@ -221,6 +221,13 @@
       return 'Bypass'
     }
   }
+  function getStatusFinal(a){
+    if (a==0){
+      return 'Rejected'
+    }else if(a == 1){
+      return 'OK'
+    }
+  }
 </script>
 
 <script type="text/javascript">
@@ -239,11 +246,11 @@
             // for(var i = 1; i<=10; i++){
             //   console.log("row "+i, table[i])
             // }
-            console.log(data["data"].reverse());
             for (i in data['data']){
+              $(table[9]).removeClass("highlight");
               var d = new Date(data['data'][i]['dt']);
               table[i].cells[0].innerHTML = d.toLocaleString("en-US");
-              table[i].cells[1].innerHTML = {{ start_ind }}+parseInt(i);
+              table[i].cells[1].innerHTML = data["tcount"]+parseInt(i);
               table[i].cells[2].innerHTML = data['data'][i]["rating"];
               table[i].cells[3].innerHTML = data['data'][i]["hold_v"];
               table[i].cells[4].innerHTML = data['data'][i]["trip_v"];
@@ -257,9 +264,11 @@
               table[i].cells[12].innerHTML = data['data'][i]["trip_t"];
               table[i].cells[13].innerHTML = getStatus(data['data'][i]["knr"]);
               table[i].cells[14].innerHTML = getStatus(data['data'][i]["hv"]);
-              table[i].cells[15].innerHTML = getStatus(data['data'][i]["status"]);
-              $(table[data["count"]-1]).addClass("highlight");
-              $(table[data["count"]-2]).removeClass("highlight");
+              table[i].cells[15].innerHTML = getStatusFinal(data['data'][i]["status"]);
+              console.log(i)
+              $(table[i]).addClass("highlight");
+              $(table[i-1]).removeClass("highlight");
+              // if (data["count"])
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) { 
