@@ -54,8 +54,8 @@ def getStatus(request):
 	dt = timezone.localtime()
 	data = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).order_by("-dt")
 	d = data[:len(data)%10]
-	if len(data)%10 == 0 and len(data) > 10:
+	if len(data)%10 == 0 and len(data) >= 10:
 		d = data[:10]
 	print("total count: ", len(data), len(d))
 	last_data = json.loads(serializers.serialize("json", d))
-	return JsonResponse({"data": [i['fields'] for i in last_data], "tcount": len(data)-len(d)})
+	return JsonResponse({"data": [i['fields'] for i in last_data], "tcount": len(data)-len(d)+1})
