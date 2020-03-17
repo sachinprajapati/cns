@@ -36,87 +36,91 @@
         </div>
     </main>
 {% else %}
-    <table class="table table-hover table-sm table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Date & Time</th>
-          <th scope="col">Count</th>
-          <th scope="col">ARC Fail</th>
-          <th scope="col">Cont Fail</th>
-          <th scope="col">Hold Fail</th>
-          <th scope="col">Trip Fail</th>
-          <th scope="col">KNR Fail</th>
-          <th scope="col">HV Fail</th>
-          <th scope="col">Total Fail</th>
-          <th scope="col">Total Pass</th>
-          <th scope="col">% Rejection</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row" id="today"></th>
-          <td>{{ data|length }}</td>
-          <td>{{ f_arc }}</td>
-          <td>{{ f_cont }}</td>
-          <td>{{ f_hold }}</td>
-          <td>{{ f_trip }}</td>
-          <td>{{ f_knr }}</td>
-          <td>{{ f_hv }}</td>
-          <td>{{ rej }}</td>
-          <td>{{ passed }}</td>
-          <td>{{ rej_rate }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="container-fluid">
+      <table class="table table-hover table-sm table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Date & Time</th>
+            <th scope="col">Count</th>
+            <th scope="col">ARC Fail</th>
+            <th scope="col">Cont Fail</th>
+            <th scope="col">Hold Fail</th>
+            <th scope="col">Trip Fail</th>
+            <th scope="col">KNR Fail</th>
+            <th scope="col">HV Fail</th>
+            <th scope="col">Total Fail</th>
+            <th scope="col">Total Pass</th>
+            <th scope="col">% Rejection</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" id="today"></th>
+            <td>{{ data|length }}</td>
+            <td>{{ f_arc }}</td>
+            <td>{{ f_cont }}</td>
+            <td>{{ f_hold }}</td>
+            <td>{{ f_trip }}</td>
+            <td>{{ f_knr }}</td>
+            <td>{{ f_hv }}</td>
+            <td>{{ rej }}</td>
+            <td>{{ passed }}</td>
+            <td>{{ rej_rate }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <script type="text/javascript">
       var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       var d = new Date();
       document.getElementById("today").innerHTML = d.toLocaleDateString("hi-IN");
     </script>
-    <table class="table table-sm">
-      <thead>
-        <tr>
-          <th scope="col">date & time</th>
-          <th scope="col">Count</th>
-          <th scope="col">Rating</th>
-          <th scope="col">HOlD V</th>
-          <th scope="col">TRIP V</th>
-          <th scope="col">ARC</th>
-          <th scope="col">CONT</th>
-          <th scope="col">HOLD</th>
-          <th scope="col">HOLD A</th>
-          <th scope="col">HOLD T</th>
-          <th scope="col">TRIP</th>
-          <th scope="col">TRIP A</th>
-          <th scope="col">TRIP T</th>
-          <th scope="col">KNR</th>
-          <th scope="col">HV</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for d in data %}
-            <tr>
-              <th scope="row">{{ d.dt|date:"d/m/y H:i:s" }}</th>
-              <td>{{ forloop.counter }}</td>
-              <td>{{ d.rating }}</td>
-              <td>{{ d.hold_v }}</td>
-              <td>{{ d.trip_v }}</td>
-              <td>{{ d.get_arc_display }}</td>
-              <td>{{ d.get_cont_display }}</td>
-              <td>{{ d.get_hold_display }}</td>
-              <td>{{ d.hold_a }}</td>
-              <td>{{ d.hold_t }}</td>
-              <td>{{ d.get_trip_display }}</td>
-              <td>{{ d.trip_a }}</td>
-              <td>{{ d.trip_t }}</td>
-              <td>{{ d.get_knr_display }}</td>
-              <td>{{ d.get_knr_display }}</td>
-              <td>{{ d.get_status_display }}</td>
-            </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="container-fluid">
+      <table class="table table-hover table-sm table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">date & time</th>
+            <th scope="col">Count</th>
+            <th scope="col">Rating</th>
+            <th scope="col">HOlD V</th>
+            <th scope="col">TRIP V</th>
+            <th scope="col">ARC</th>
+            <th scope="col">CONT</th>
+            <th scope="col">HOLD</th>
+            <th scope="col">HOLD A</th>
+            <th scope="col">HOLD T</th>
+            <th scope="col">TRIP</th>
+            <th scope="col">TRIP A</th>
+            <th scope="col">TRIP T</th>
+            <th scope="col">KNR</th>
+            <th scope="col">HV</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in data %}
+              <tr>
+                <th scope="row">{{ d.dt|date:"d/m/y H:i:s" }}</th>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ d.rating }}</td>
+                <td>{{ d.hold_v }}</td>
+                <td>{{ d.trip_v }}</td>
+                <td>{{ d.get_arc_display }}</td>
+                <td>{{ d.get_cont_display }}</td>
+                <td>{{ d.get_hold_display }}</td>
+                <td>{{ d.hold_a }}</td>
+                <td>{{ d.hold_t }}</td>
+                <td>{{ d.get_trip_display }}</td>
+                <td>{{ d.trip_a }}</td>
+                <td>{{ d.trip_t }}</td>
+                <td>{{ d.get_knr_display }}</td>
+                <td>{{ d.get_knr_display }}</td>
+                <td>{{ d.get_status_display }}</td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 {% endif %}
 <br>
 <div class="text-center">

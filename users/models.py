@@ -10,7 +10,7 @@ status = [
 
 
 class Data(models.Model):
-	dt = models.DateTimeField(default=timezone.localtime())
+	dt = models.DateTimeField(auto_now_add=True, auto_now=False)
 	rating = models.CharField(max_length=255)
 	hold = models.IntegerField(default=2, choices=status)
 	hold_a = models.FloatField(default=0)

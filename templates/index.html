@@ -5,7 +5,7 @@
 {% include 'navbar.html' %}
 <br/>
 <div class="container-fluid">
-  <table class="table table-hover table-sm table-bordered" id="production">
+  <table class="table table-hover table-sm table-bordered">
   <thead class="thead-dark">
     <tr>
       <th scope="col">Date & Time</th>
@@ -26,223 +26,247 @@
       <th scope="col">Status</th>
     </tr>
   </thead>
-  <tbody>
-    {% for d in data %}
-      <tr {% if forloop.last %}class="highlight"{% endif%}>
-        <th scope="row">{{ d.dt }}</th>
-        <td>{{ count|add:forloop.counter }}</td>
-        <td>{{ d.rating }}</td>
-        <td>{{ d.hold_v }}</td>
-        <td>{{ d.trip_v }}</td>
-        <td>{{ d.get_arc_display }}</td>
-        <td>{{ d.get_cont_display }}</td>
-        <td>{{ d.get_hold_display }}</td>
-        <td>{{ d.hold_a }}</td>
-        <td>{{ d.hold_t }}</td>
-        <td>{{ d.trip }}</td>
-        <td>{{ d.trip_a }}</td>
-        <td>{{ d.trip_t }}</td>
-        <td>{{ d.get_knr_display }}</td>
-        <td>{{ d.get_hv_display }}</td>
-        <td>{{ d.get_status_display }}</td>
-      </tr>
-    {% endfor %}
-    <!-- <tr>
-      <th scope="row">2</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+  <tbody id="production">
+    <tr>
+      <th scope="row">1</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
-      <th scope="row">3</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
-      <th scope="row">4</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
-      <th scope="row">5</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
-      <th scope="row">6</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
-      <th scope="row">7</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
-      <th scope="row">8</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
-      <th scope="row">9</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
-      <th scope="row">10</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr> -->
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
   </tbody>
   </table>
 </div>
+
 <script type="text/javascript">
-//   setTimeout(function(){
-//    window.location.reload(1);
-// }, 1000);
+  function getStatus(a){
+    if (a==0){
+      return 'Fail'
+    }else if(a == 1){
+      return 'Pass'
+    }else if(a == 2){
+      return 'Bypass'
+    }
+  }
 </script>
 
 <script type="text/javascript">
   $( document ).ready(function() {
-    $.ajax({
-      type: "POST",  
-      url: "{% url 'users:get-status' %}",
-      data: {
-        "msg": "request",
-        csrfmiddlewaretoken: '{{ csrf_token }}'
-      }, 
-      success: function(data){  
-          $("form#updatejob").hide(function(){$("div.success").fadeIn();});
-          var table = document.getElementById("production").rows;
-          // for(var i = 1; i<=10; i++){
-          //   console.log("row "+i, table[i])
-          // }
-          for (i in data['data']){
-            var d = new Date(data['data'][i]['dt']);
-            table[i+1].cells[0].innerHTML = 'sdfsf';
-            console.log(dt);
-          }
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) { 
-          console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
-      }       
-    });
+    setInterval(function() {
+      $.ajax({
+        type: "POST",  
+        url: "{% url 'users:get-status' %}",
+        data: {
+          "msg": "request",
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        }, 
+        success: function(data){  
+            $("form#updatejob").hide(function(){$("div.success").fadeIn();});
+            var table = document.getElementById("production").rows;
+            // for(var i = 1; i<=10; i++){
+            //   console.log("row "+i, table[i])
+            // }
+            console.log(data["data"].reverse());
+            for (i in data['data']){
+              var d = new Date(data['data'][i]['dt']);
+              table[i].cells[0].innerHTML = d.toLocaleString("en-US");
+              table[i].cells[1].innerHTML = {{ start_ind }}+parseInt(i);
+              table[i].cells[2].innerHTML = data['data'][i]["rating"];
+              table[i].cells[3].innerHTML = data['data'][i]["hold_v"];
+              table[i].cells[4].innerHTML = data['data'][i]["trip_v"];
+              table[i].cells[5].innerHTML = getStatus(data['data'][i]["arc"]);
+              table[i].cells[6].innerHTML = getStatus(data['data'][i]["cont"]);
+              table[i].cells[7].innerHTML = getStatus(data['data'][i]["hold"]);
+              table[i].cells[8].innerHTML = data['data'][i]["hold_a"];
+              table[i].cells[9].innerHTML = data['data'][i]["hold_t"];
+              table[i].cells[10].innerHTML = getStatus(data['data'][i]["trip"]);
+              table[i].cells[11].innerHTML = data['data'][i]["trip_a"];
+              table[i].cells[12].innerHTML = data['data'][i]["trip_t"];
+              table[i].cells[13].innerHTML = getStatus(data['data'][i]["knr"]);
+              table[i].cells[14].innerHTML = getStatus(data['data'][i]["hv"]);
+              table[i].cells[15].innerHTML = getStatus(data['data'][i]["status"]);
+              $(table[data["count"]-1]).addClass("highlight");
+              $(table[data["count"]-2]).removeClass("highlight");
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) { 
+            console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
+        }       
+      });
+    }, 1000);
   });
 </script>
 

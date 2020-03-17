@@ -4,6 +4,8 @@ from django.views.generic.list import ListView
 from django.utils import timezone
 from datetime import datetime
 from django.core import serializers
+from django.db.models import Count
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from users.models import Data
 from users.funcs import *
@@ -22,10 +24,11 @@ def Homepage(request):
 	context = DataReport(dt.date())
 	if context:
 		data = context['data']
-		print("total count: ", len(data))
 		context['tcount'] = len(data)
 		context['data'] = data[len(data)-len(data)%10:]
 		context['count'] = len(data)-len(context['data'])
+		context['start_ind'] = len(data)-len(data)%10+1
+		print(context)
 	return render(request, "index.html", context)
 
 def Reports(request):
@@ -33,20 +36,27 @@ def Reports(request):
 	if request.method == 'POST':
 		dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d").date()
 		data = DataReport(dt)
+		data["rating_data"] = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).values("rating").annotate(count=Count('rating'))
+		print(data["rating_data"])
 		return render(request, "reports.html", data)
 	context["form"] = True
 	return render(request, "reports.html", context)
 
-
+@csrf_exempt
 def Procces(request):
-	Data.objects.create(hold_v=True, trip_v=True)
-	return JsonResponse({"First": True})
+	if request.POST == 'GET':
+		data = request.GET
+		f = Data._meta.get_all_field_names()
+		print("data is ", f)
+	return JsonResponse({"First": "sdf"})
 
 
 def getStatus(request):
 	dt = timezone.localtime()
 	data = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).order_by("-dt")
-	print("total count: ", len(data), data)
+	print("total count: ", len(data))
 	d = data[:len(data)%10]
+	if d == 0 and len(data) > 10:
+		d = data[:10]
 	data = json.loads(serializers.serialize("json", d))
-	return JsonResponse({"data": [i['fields'] for i in data]})
+	return JsonResponse({"data": [i['fields'] for i in data], "count": len(d)})
