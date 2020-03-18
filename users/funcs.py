@@ -1,4 +1,6 @@
 from users.models import Data
+from datetime import datetime, timedelta
+from django.db.models import Q, Count
 
 def Exact(st):
     d = {}
@@ -36,11 +38,12 @@ def Exact(st):
             d['cont'] = 0
     return d
 
-def DataReport(dt):
+def DataReport(dt, query=False, data=None):
     context = {}
-    data = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).order_by("dt")
-    if len(data) == 0:
-        return {}
+    if not query:
+        data = QueryDate(dt)
+        if len(data) == 0:
+            return {}
     context["data"] = data
     context["rej"] = data.filter(status=0).count()
     context["passed"] = data.filter(status=1).count()
@@ -52,4 +55,24 @@ def DataReport(dt):
     context["f_hv"] = data.filter(hv=0).count()
     context["rej_rate"] = "{0:.2f}".format(context["rej"]*100/len(data))
     context["pass_rate"] = "{0:.2f}".format(context["passed"]*100/len(data))
+    context['tcount'] = len(data)
+    context['count'] = len(data)-len(context['data'])
     return context
+
+def QueryDate(dt):
+    next_dt = dt+timedelta(days=1)
+    # return Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year)
+    return Data.objects.filter(Q(dt__gte="{} 08:00:00".format(dt.date()))&Q(dt__lte="{} 07:59:59".format(next_dt.date())))
+
+def RatingReport(dt):
+    qdt = QueryDate(dt)
+    d = {}
+    data = qdt.values("rating").annotate(Count("rating"))
+    for i in data:
+        i["report"] = DataReport(dt, query=True, data=qdt.filter(rating=i["rating"]))
+        i["report"].pop("data")
+    d["total"] = DataReport(dt, query=True, data=qdt)
+    d["total"].pop("data")
+    d["data"] = qdt
+    d["report"] = data
+    return d

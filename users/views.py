@@ -24,50 +24,48 @@ def Homepage(request):
 			"errors": "No Communication",
 		}
 	dt = timezone.localtime()
-	context = DataReport(dt.date())
-	if context:
-		data = context['data']
-		context['tcount'] = len(data)
-		context['data'] = data[len(data)-len(data)%10:]
-		context['count'] = len(data)-len(context['data'])
-		print(context)
+	context = DataReport(dt)
 	return render(request, "index.html", context)
 
 def Reports(request):
 	context = {}
 	if request.method == 'POST':
-		dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d").date()
-		data = DataReport(dt)
-		data["rating_data"] = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).values("rating").annotate(count=Count('rating'))
-		print(data["rating_data"])
+		dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d")
+		data = RatingReport(dt)
 		return render(request, "reports.html", data)
 	context["form"] = True
 	return render(request, "reports.html", context)
 
-@csrf_exempt
-def Procces(request):
-	if request.POST == 'GET':
-		data = request.GET
-		f = Data._meta.get_all_field_names()
-		print("data is ", f)
-	return JsonResponse({"First": "sdf"})
+
+def Summary(request):
+	dt = timezone.localtime()
+	if dt.hour < 8:
+		dt = dt-timedelta(days=1)
+	context = DataReport(dt)
+	context.pop("data")
+	return JsonResponse(context)
 
 
 def getStatus(request):
 	dt = timezone.localtime()
-	data = Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year).order_by("-dt")
+	if dt.hour < 8:
+		dt = dt-timedelta(days=1)
+	data = QueryDate(dt).order_by("-dt")
 	d = data[:len(data)%10]
 	if len(data)%10 == 0 and len(data) >= 10:
 		d = data[:10]
 	print("total count: ", len(data), len(d))
 	last_data = json.loads(serializers.serialize("json", d))
-	return JsonResponse({"data": [i['fields'] for i in last_data], "tcount": len(data)-len(d)+1})
+	summary = DataReport(dt)
+	if summary.get("data"):
+		summary.pop("data")
+	return JsonResponse({"data": [i['fields'] for i in last_data], "tcount": len(data)-len(d)+1, "summary": summary})
 
 def ReportsMail(request):
 	context = {}
 	context["form"] = True
 	if request.method == 'POST':
-		dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d").date()
+		dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d")
 		report = DataReport(dt)
 		report["dt"] = dt
 		msg_html = render_to_string('email.html', report)

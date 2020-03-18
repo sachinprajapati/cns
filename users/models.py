@@ -8,6 +8,11 @@ status = [
 	(2, 'Bypass'),
 ]
 
+Final_status = [
+	(0, 'Rejected'),
+	(1, 'OK'),
+]
+
 
 class Data(models.Model):
 	dt = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -24,7 +29,7 @@ class Data(models.Model):
 	cont = models.IntegerField(default=2, choices=status)
 	knr = models.IntegerField(default=2, choices=status)
 	hv = models.IntegerField(default=2, choices=status)
-	status = models.IntegerField(default=0, choices=status)
+	status = models.IntegerField(default=0, choices=Final_status)
 
 
 	def __str__(self):

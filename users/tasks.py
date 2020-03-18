@@ -34,7 +34,7 @@ def getData():
 	# while True:
 	# 	print("getData")
 	# 	time.sleep(1)
-	data = Exact("RC 6.0HOLDV 83HOLDP1TRIPV151TRIPP1KNRP1HVP1OVER1HI  33.1TI  59.8HT 103TT  14CO1AC1$00")
+	data = Exact("RC 6.0HOLDV 83HOLDP1TRIPV151TRIPP1KNRP1HVP1OVER1HI  33.1TI  59.8HT 103TT  14CO1AC0$00")
 	d = Data(**data)
 	d.save()
 	print("created data")

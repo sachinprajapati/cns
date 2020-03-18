@@ -230,55 +230,6 @@
   }
 </script>
 
-<script type="text/javascript">
-  $( document ).ready(function() {
-    setInterval(function() {
-      $.ajax({
-        type: "POST",  
-        url: "{% url 'users:get-status' %}",
-        data: {
-          "msg": "request",
-          csrfmiddlewaretoken: '{{ csrf_token }}'
-        }, 
-        success: function(data){  
-            $("form#updatejob").hide(function(){$("div.success").fadeIn();});
-            var table = document.getElementById("production").rows;
-            // for(var i = 1; i<=10; i++){
-            //   console.log("row "+i, table[i])
-            // }
-            for (i in data['data']){
-              $(table[9]).removeClass("highlight");
-              var d = new Date(data['data'][i]['dt']);
-              table[i].cells[0].innerHTML = d.toLocaleString("en-US");
-              table[i].cells[1].innerHTML = data["tcount"]+parseInt(i);
-              table[i].cells[2].innerHTML = data['data'][i]["rating"];
-              table[i].cells[3].innerHTML = data['data'][i]["hold_v"];
-              table[i].cells[4].innerHTML = data['data'][i]["trip_v"];
-              table[i].cells[5].innerHTML = getStatus(data['data'][i]["arc"]);
-              table[i].cells[6].innerHTML = getStatus(data['data'][i]["cont"]);
-              table[i].cells[7].innerHTML = getStatus(data['data'][i]["hold"]);
-              table[i].cells[8].innerHTML = data['data'][i]["hold_a"];
-              table[i].cells[9].innerHTML = data['data'][i]["hold_t"];
-              table[i].cells[10].innerHTML = getStatus(data['data'][i]["trip"]);
-              table[i].cells[11].innerHTML = data['data'][i]["trip_a"];
-              table[i].cells[12].innerHTML = data['data'][i]["trip_t"];
-              table[i].cells[13].innerHTML = getStatus(data['data'][i]["knr"]);
-              table[i].cells[14].innerHTML = getStatus(data['data'][i]["hv"]);
-              table[i].cells[15].innerHTML = getStatusFinal(data['data'][i]["status"]);
-              console.log(i)
-              $(table[i]).addClass("highlight");
-              $(table[i-1]).removeClass("highlight");
-              // if (data["count"])
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
-        }       
-      });
-    }, 1000);
-  });
-</script>
-
 
 <script type="text/javascript">
   // count = 1
@@ -291,7 +242,7 @@
   //     var d = new Date();
   //     $.ajax({
   //       type: "POST",  
-  //       url: "{% url 'users:procces' %}",
+  //       url: "",
   //       data: {
   //         "msg": "request",
   //         csrfmiddlewaretoken: '{{ csrf_token }}'
@@ -344,7 +295,7 @@
       <th scope="col">% Rejection</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="summary-table">
     <tr>
       <th scope="row" id="today"></th>
       <td>{{ tcount }}</td>
@@ -361,6 +312,67 @@
   </tbody>
 </table>
 </div>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    setInterval(function() {
+      $.ajax({
+        type: "POST",  
+        url: "{% url 'users:get-status' %}",
+        data: {
+          "msg": "request",
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        }, 
+        success: function(data){  
+            $("form#updatejob").hide(function(){$("div.success").fadeIn();});
+            var table = document.getElementById("production").rows;
+            // for(var i = 1; i<=10; i++){
+            //   console.log("row "+i, table[i])
+            // }
+            console.log(data);
+            var table1 = document.getElementById("summary-table").rows;
+            table1[0].cells[1].innerHTML = data["summary"]["tcount"];
+            table1[0].cells[2].innerHTML = data["summary"]["f_arc"];
+            table1[0].cells[3].innerHTML = data["summary"]["f_cont"];
+            table1[0].cells[4].innerHTML = data["summary"]["f_hold"];
+            table1[0].cells[5].innerHTML = data["summary"]["f_trip"];
+            table1[0].cells[6].innerHTML = data["summary"]["f_knr"];
+            table1[0].cells[7].innerHTML = data["summary"]["f_hv"];
+            table1[0].cells[8].innerHTML = data["summary"]["rej"];
+            table1[0].cells[9].innerHTML = data["summary"]["passed"];
+            table1[0].cells[10].innerHTML = data["summary"]["rej_rate"];
+            for (i in data['data'].reverse()){
+              $(table[9]).removeClass("highlight");
+              var d = new Date(data['data'][i]['dt']);
+              table[i].cells[0].innerHTML = d.toLocaleString("en-US");
+              table[i].cells[1].innerHTML = data["tcount"]+parseInt(i);
+              table[i].cells[2].innerHTML = data['data'][i]["rating"];
+              table[i].cells[3].innerHTML = data['data'][i]["hold_v"];
+              table[i].cells[4].innerHTML = data['data'][i]["trip_v"];
+              table[i].cells[5].innerHTML = getStatus(data['data'][i]["arc"]);
+              table[i].cells[6].innerHTML = getStatus(data['data'][i]["cont"]);
+              table[i].cells[7].innerHTML = getStatus(data['data'][i]["hold"]);
+              table[i].cells[8].innerHTML = data['data'][i]["hold_a"];
+              table[i].cells[9].innerHTML = data['data'][i]["hold_t"];
+              table[i].cells[10].innerHTML = getStatus(data['data'][i]["trip"]);
+              table[i].cells[11].innerHTML = data['data'][i]["trip_a"];
+              table[i].cells[12].innerHTML = data['data'][i]["trip_t"];
+              table[i].cells[13].innerHTML = getStatus(data['data'][i]["knr"]);
+              table[i].cells[14].innerHTML = getStatus(data['data'][i]["hv"]);
+              table[i].cells[15].innerHTML = getStatusFinal(data['data'][i]["status"]);
+              console.log(i)
+              $(table[i]).addClass("highlight");
+              $(table[i-1]).removeClass("highlight");
+              // if (data["count"])
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) { 
+            console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
+        }       
+      });
+    }, 1000);
+  });
+</script>
 <script type="text/javascript">
   var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   var d = new Date();
