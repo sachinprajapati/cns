@@ -27,37 +27,55 @@
 </style>
 </head>
 <body>
+<h2>Report For Date :- {{ dt }}</h2>
 
 <table id="customers">
   <thead class="thead-dark">
-	  <tr>
-	    <th scope="col">Date & Time</th>
-	    <th scope="col">Count</th>
-	    <th scope="col">ARC Fail</th>
-	    <th scope="col">Cont Fail</th>
-	    <th scope="col">Hold Fail</th>
-	    <th scope="col">Trip Fail</th>
-	    <th scope="col">KNR Fail</th>
-	    <th scope="col">HV Fail</th>
-	    <th scope="col">Total Fail</th>
-	    <th scope="col">Total Pass</th>
-	    <th scope="col">% Rejection</th>
-	  </tr>
+	<tr>
+		<th scope="col">Rating</th>
+		<th scope="col">Total</th>
+		<th scope="col">ARC Fail</th>
+		<th scope="col">Cont Fail</th>
+		<th scope="col">Hold Fail</th>
+		<th scope="col">Trip Fail</th>
+		<th scope="col">KNR Fail</th>
+		<th scope="col">HV Fail</th>
+		<th scope="col">Total Fail</th>
+		<th scope="col">Total Pass</th>
+		<th scope="col">% Rejection</th>
+	</tr>
 	</thead>
 	<tbody>
-	  <tr>
-	    <td>{{ dt }}</td>
-	    <td>{{ data|length }}</td>
-	    <td>{{ f_arc }}</td>
-	    <td>{{ f_cont }}</td>
-	    <td>{{ f_hold }}</td>
-	    <td>{{ f_trip }}</td>
-	    <td>{{ f_knr }}</td>
-	    <td>{{ f_hv }}</td>
-	    <td>{{ rej }}</td>
-	    <td>{{ passed }}</td>
-	    <td>{{ rej_rate }}</td>
-	  </tr>
+		{% for r in report %}
+		<tr>
+		<td>{{ r.rating }}</td>
+		<td>{{ r.rating__count }}</td>
+		<td>{{ r.report.f_arc }}</td>
+		<td>{{ r.report.f_cont }}</td>
+		<td>{{ r.report.f_hold }}</td>
+		<td>{{ r.report.f_trip }}</td>
+		<td>{{ r.report.f_knr }}</td>
+		<td>{{ r.report.f_hv }}</td>
+		<td>{{ r.report.rej }}</td>
+		<td>{{ r.report.passed }}</td>
+		<td>{{ r.report.rej_rate }}</td>
+		</tr>
+		{% endfor %}
+		{% if total %}
+		<tr>
+		    <td>All</td>
+		    <td>{{ total.tcount }}</td>
+		    <td>{{ total.f_arc }}</td>
+		    <td>{{ total.f_cont }}</td>
+		    <td>{{ total.f_hold }}</td>
+		    <td>{{ total.f_trip }}</td>
+		    <td>{{ total.f_knr }}</td>
+		    <td>{{ total.f_hv }}</td>
+		    <td>{{ total.rej }}</td>
+		    <td>{{ total.passed }}</td>
+		    <td>{{ total.rej_rate }}</td>
+		  </tr>
+		{% endif %}
 	</tbody>
 </table>
 

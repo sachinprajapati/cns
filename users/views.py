@@ -66,17 +66,24 @@ def ReportsMail(request):
 	context["form"] = True
 	if request.method == 'POST':
 		dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d")
-		report = DataReport(dt)
-		report["dt"] = dt
-		msg_html = render_to_string('email.html', report)
-		plain_message = strip_tags(msg_html)
-		send_mail(
-		    'Daily Production Report',
-		    plain_message,
-		    'billgates@gmail.com',
-		    ['gaganguptaj@gmail.com'],
-		    fail_silently=False,
-		    html_message=msg_html
-		)
-		context["form"] = False	
+		report = RatingReport(dt)
+		if report:
+			report["dt"] = dt.date()
+			msg_html = render_to_string('email.html', report)
+			plain_message = strip_tags(msg_html)
+			try:
+				send_mail(
+				'Daily Production Report',
+				plain_message,
+				'billgates@gmail.com',
+				['gaganguptaj@gmail.com'],
+				fail_silently=False,
+				html_message=msg_html)
+				context["form"] = False
+			except Exception as e:
+				context["errors"] = "Mail Not Sent, Please Check Internet Error"
+				context["form"] = True	
+		else:
+			context["errors"] = "There is not Data on this Date {}".format(dt.date())
+			context["form"] = True
 	return render(request, "reportmail.html", context)

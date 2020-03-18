@@ -66,6 +66,8 @@ def QueryDate(dt):
 
 def RatingReport(dt):
     qdt = QueryDate(dt)
+    if not qdt:
+        return {}
     d = {}
     data = qdt.values("rating").annotate(Count("rating"))
     for i in data:

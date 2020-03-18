@@ -33,7 +33,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div><br/>
+        {% if errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ errors }}
+            </div>
+        {% endif %}
     </main>
 {% else %}
 	<div class="alert alert-success" role="alert">
