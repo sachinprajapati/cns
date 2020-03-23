@@ -59,13 +59,18 @@ def DataReport(dt, query=False, data=None):
     context['count'] = len(data)-len(context['data'])
     return context
 
-def QueryDate(dt):
+def QueryDate(dt, edt=None):
     next_dt = dt+timedelta(days=1)
     # return Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year)
+    print("dt, ",dt, "edt ", edt)
+    if edt:
+        # return Data.objects.filter(dt__year=dt.year, dt__month=dt.month, dt__day__gte=dt.day, dt__day__lte=edt.day \
+        #     , Q(dt__hour__gte=dt.hour)&Q(dt__hour__lte=edt.hour), Q(dt__minute__gte=dt.minute)&Q(dt__minute__lte=edt.minute))
+        return Data.objects.filter(dt__gte=dt, dt__lte=edt)
     return Data.objects.filter(Q(dt__gte="{} 08:00:00".format(dt.date()))&Q(dt__lte="{} 07:59:59".format(next_dt.date())))
 
-def RatingReport(dt):
-    qdt = QueryDate(dt)
+def RatingReport(dt, edt=None):
+    qdt = QueryDate(dt, edt)
     if not qdt:
         return {}
     d = {}

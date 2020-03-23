@@ -30,8 +30,21 @@ def Homepage(request):
 def Reports(request):
 	context = {}
 	if request.method == 'POST':
-		dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d")
-		data = RatingReport(dt)
+		tm = request.POST.get("time")
+		etm = request.POST.get("etime")
+		edt = request.POST.get("edate")
+		if tm: 
+			dt = datetime.strptime(request.POST.get("date")+" "+tm, "%Y-%m-%d %H:%M")
+		else:
+			dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d")
+		if etm and edt: 
+			edt = datetime.strptime(edt+" "+etm, "%Y-%m-%d %H:%M")
+		elif edt:
+			edt = datetime.strptime(edt, "%Y-%m-%d")
+		elif etm:
+			edt = datetime.strptime(request.POST.get("date")+" "+etm, "%Y-%m-%d %H:%M")
+		print("dt is", dt, "end time",edt)
+		data = RatingReport(dt, edt)
 		return render(request, "reports.html", data)
 	context["form"] = True
 	return render(request, "reports.html", context)
@@ -65,10 +78,24 @@ def ReportsMail(request):
 	context = {}
 	context["form"] = True
 	if request.method == 'POST':
-		dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d")
-		report = RatingReport(dt)
+		tm = request.POST.get("time")
+		etm = request.POST.get("etime")
+		edt = request.POST.get("edate")
+		if tm: 
+			dt = datetime.strptime(request.POST.get("date")+" "+tm, "%Y-%m-%d %H:%M")
+		else:
+			dt = datetime.strptime(request.POST.get("date"), "%Y-%m-%d")
+		if etm and edt: 
+			edt = datetime.strptime(edt+" "+etm, "%Y-%m-%d %H:%M")
+		elif edt:
+			edt = datetime.strptime(edt, "%Y-%m-%d")
+		elif etm:
+			edt = datetime.strptime(request.POST.get("date")+" "+etm, "%Y-%m-%d %H:%M")
+		print("dt is", dt, "end time",edt)
+		report = RatingReport(dt, edt)
 		if report:
-			report["dt"] = dt.date()
+			report["dt"] = dt
+			report["edt"] = edt
 			msg_html = render_to_string('email.html', report)
 			plain_message = strip_tags(msg_html)
 			try:
