@@ -34,3 +34,6 @@ class Data(models.Model):
 
 	def __str__(self):
 		return '{} {}'.format(self.dt.strftime("%d/%m/%y %I:%M:%S %p"), self.status)
+
+class Email(models.Model):
+	email_id = models.EmailField()

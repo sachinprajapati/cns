@@ -65,8 +65,8 @@ def getStatus(request):
 		dt = dt-timedelta(days=1)
 	data = QueryDate(dt).order_by("-dt")
 	d = data[:len(data)%10]
-	if len(data)%10 == 0 and len(data) >= 10:
-		d = data[:10]
+	if len(data)%10 == 0 and len(data) >= 20:
+		d = data[:20]
 	print("total count: ", len(data), len(d))
 	last_data = json.loads(serializers.serialize("json", d))
 	summary = DataReport(dt)
