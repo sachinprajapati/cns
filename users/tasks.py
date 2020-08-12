@@ -28,8 +28,13 @@ def SendDataMail():
 		report["dt"] = dt
 		msg_html = render_to_string('email.html', report)
 		plain_message = strip_tags(msg_html)
+		m = Machine.objects.all()
+		if len(m) == 1:
+			title = 'Line {} Machine {} Production Report'.format(m[0].line, m[0].machine)
+		else:
+			title = 'Daily Production Report'
 		if send_mail(
-			'Daily Production Report',
+			title,
 			plain_message,
 			'cnsharidwar@gmail.com',
 			emails,
