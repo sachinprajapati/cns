@@ -7,28 +7,38 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 from django.utils import timezone
+from datetime import datetime, timedelta
+
 from users.views import *
 from users.funcs import *
 
+from .models import *
+
 import time
 
-@periodic_task(run_every=crontab(minute=32, hour=11))
-# @periodic_task(run_every=timezone.timedelta(seconds=10))
+@periodic_task(run_every=crontab(minute=0, hour='8,9,10,11,12,21,22'))
+#@periodic_task(run_every=timezone.timedelta(seconds=10))
 def SendDataMail():
 	print("sending mail")
 	dt = timezone.localtime()
-	report = RatingReport(dt)
-	if report:
-		report["dt"] = dt.date()
+	report = RatingReport(dt - timedelta(days=1))
+	to_send = MailStatus.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year)
+	emails = [e.email_id for e in Email.objects.all()]
+	if report and emails and not to_send:
+		report["dt"] = dt
 		msg_html = render_to_string('email.html', report)
 		plain_message = strip_tags(msg_html)
-		send_mail(
-		'Daily Production Report',
-		plain_message,
-		'billgates@gmail.com',
-		['gaganguptaj@gmail.com'],
-		fail_silently=False,
-		html_message=msg_html)
+		if send_mail(
+			'Daily Production Report',
+			plain_message,
+			'cnsharidwar@gmail.com',
+			emails,
+			fail_silently=False,
+			html_message=msg_html):
+			m = MailStatus.objects.create()
+			m.save()
+			print("mail sent")
+
 
 
 # @periodic_task(run_every=timezone.timedelta(seconds=3))

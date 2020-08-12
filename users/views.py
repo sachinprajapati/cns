@@ -10,7 +10,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from users.models import Data
+from users.models import *
 from users.funcs import *
 
 import json
@@ -93,7 +93,8 @@ def ReportsMail(request):
 			edt = datetime.strptime(request.POST.get("date")+" "+etm, "%Y-%m-%d %H:%M")
 		print("dt is", dt, "end time",edt)
 		report = RatingReport(dt, edt)
-		if report:
+		emails = [e.email_id for e in Email.objects.all()]
+		if report and emails:
 			report["dt"] = dt
 			report["edt"] = edt
 			msg_html = render_to_string('email.html', report)
@@ -103,7 +104,7 @@ def ReportsMail(request):
 				'Daily Production Report',
 				plain_message,
 				'billgates@gmail.com',
-				['gaganguptaj@gmail.com'],
+				emails,
 				fail_silently=False,
 				html_message=msg_html)
 				context["form"] = False

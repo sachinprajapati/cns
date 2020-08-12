@@ -37,3 +37,18 @@ class Data(models.Model):
 
 class Email(models.Model):
 	email_id = models.EmailField()
+
+	def __str__(self):
+		return self.email_id
+
+
+class Machine(models.Model):
+	line = models.PositiveIntegerField(verbose_name='Line Number')
+	machine = models.PositiveIntegerField(verbose_name='Machne Number')
+
+	def __str__(self):
+		return 'Line {} & Machine {}'.format(self.line, self.machine)
+
+
+class MailStatus(models.Model):
+	dt = models.DateField(auto_now_add=True)
