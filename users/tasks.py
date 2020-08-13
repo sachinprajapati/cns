@@ -16,8 +16,7 @@ from .models import *
 
 import time
 
-@periodic_task(run_every=crontab(minute=0, hour='8,9,10,11,12,21,22'))
-#@periodic_task(run_every=timezone.timedelta(seconds=10))
+@periodic_task(run_every=crontab(minute=0, hour='8-20'))
 def SendDataMail():
 	print("sending mail")
 	dt = timezone.localtime()
