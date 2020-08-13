@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 admin.site.site_header = 'Protool Automation & controls SCADA'
+admin.site.site_url = '/'
+admin.site.site_title = 'PAC SCADA Settings'
 
 urlpatterns = [
     path('admin/', admin.site.urls),

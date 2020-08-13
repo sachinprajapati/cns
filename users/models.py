@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MaxValueValidator
 # Create your models here.
 
 status = [
@@ -42,13 +43,29 @@ class Email(models.Model):
 		return self.email_id
 
 
+Machine_Choice = [
+    (1, 'In'),
+    (2, 'Out'),
+]
+
 class Machine(models.Model):
 	line = models.PositiveIntegerField(verbose_name='Line Number')
-	machine = models.PositiveIntegerField(verbose_name='Machne Number')
+	machine = models.PositiveIntegerField(verbose_name='Machne Number', choices=Machine_Choice)
 
 	def __str__(self):
-		return 'Line {} & Machine {}'.format(self.line, self.machine)
+		return 'Line {} & Machine {}'.format(self.line, self.get_machine_display())
 
 
 class MailStatus(models.Model):
 	dt = models.DateField(auto_now_add=True)
+
+	def __str__(self):
+		return self.dt.strftime("%d/%m/%Y")
+
+
+class ShiftTime(models.Model):
+	From = models.PositiveIntegerField(validators=[MaxValueValidator(23)])
+	to = models.PositiveIntegerField(validators=[MaxValueValidator(23)])
+
+	def __str__(self):
+		return 'from {} to {}'.format(self.From, self.to)

@@ -25,24 +25,21 @@ def SendDataMail():
 	to_send = MailStatus.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year)
 	emails = [e.email_id for e in Email.objects.all()]
 	if report and emails and not to_send:
-		report["dt"] = dt
+		m = Machine.objects.filter().first()
+		st = ShiftTime.objects.filter().first()
+		title = 'Line {} Machine {} Production Report'.format(m.line, m.get_machine_display())
+		report["title"] = title
+		report["st"] = st
 		msg_html = render_to_string('email.html', report)
 		plain_message = strip_tags(msg_html)
-		m = Machine.objects.all()
-		if len(m) == 1:
-			title = 'Line {} Machine {} Production Report'.format(m[0].line, m[0].machine)
-		else:
-			title = 'Daily Production Report'
-		if send_mail(
-			title,
-			plain_message,
-			'cnsharidwar@gmail.com',
-			emails,
+		if send_mail(title, plain_message, 'cnsharidwar@gmail.com',emails,
 			fail_silently=False,
 			html_message=msg_html):
 			m = MailStatus.objects.create()
 			m.save()
 			print("mail sent")
+	else:
+		print("mail not sent")
 
 
 

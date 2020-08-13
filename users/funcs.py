@@ -1,4 +1,4 @@
-from users.models import Data
+from users.models import *
 from datetime import datetime, timedelta
 from django.db.models import Q, Count
 
@@ -67,7 +67,8 @@ def QueryDate(dt, edt=None):
         # return Data.objects.filter(dt__year=dt.year, dt__month=dt.month, dt__day__gte=dt.day, dt__day__lte=edt.day \
         #     , Q(dt__hour__gte=dt.hour)&Q(dt__hour__lte=edt.hour), Q(dt__minute__gte=dt.minute)&Q(dt__minute__lte=edt.minute))
         return Data.objects.filter(dt__gte=dt, dt__lte=edt)
-    return Data.objects.filter(Q(dt__gte="{} 08:00:00".format(dt.date()))&Q(dt__lte="{} 07:59:59".format(next_dt.date())))
+    st = ShiftTime.objects.filter().first()
+    return Data.objects.filter(Q(dt__gte="{} {}:00:00".format(dt.date(), st.From))&Q(dt__lte="{} {}:59:59".format(next_dt.date(), st.to-1)))
 
 def RatingReport(dt, edt=None):
     qdt = QueryDate(dt, edt)
@@ -82,4 +83,7 @@ def RatingReport(dt, edt=None):
     d["total"].pop("data")
     d["data"] = qdt
     d["report"] = data
+    d["dt"] = dt
+    if not edt:
+        d["edt"] = dt + timedelta(days=1)
     return d
