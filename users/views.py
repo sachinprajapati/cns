@@ -66,7 +66,8 @@ def getStatus(request):
 	if summary.get("data"):
 		summary.pop("data")
 	try:
-		instrument = minimalmodbus.Instrument('/dev/ttyS1', 1) 
+		instrument = minimalmodbus.Instrument('/dev/ttyS1', 1)
+		plc_status = True
 	except Exception as e:
 		plc_status = False
 	return JsonResponse({"data": [i['fields'] for i in last_data], "tcount": len(data)-len(d)+1, "summary": summary, "plc_status": plc_status})
