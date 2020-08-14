@@ -3,6 +3,13 @@
 {% block content %}
 
 {% include 'navbar.html' %}
+<style>
+  tr {
+   line-height: 15px;
+   min-height: 15px;
+   height: 15px;
+}
+</style>
 <br/>
 <div class="container-fluid">
   <table class="table table-hover table-sm table-bordered">
@@ -420,13 +427,6 @@
             //   console.log("row "+i, table[i])
             // }
             console.log(data);
-            if(data["plc_status"]){
-              $("#led-red").hide();
-              $("#led-green").show();
-            }else{
-              $("#led-red").show();
-              $("#led-green").hide();
-            }
             var table1 = document.getElementById("summary-table").rows;
             table1[0].cells[1].innerHTML = data["summary"]["tcount"];
             table1[0].cells[2].innerHTML = data["summary"]["f_arc"];
