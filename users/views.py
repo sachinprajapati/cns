@@ -57,9 +57,9 @@ def getStatus(request):
 	if dt.hour < 8:
 		dt = dt-timedelta(days=1)
 	data = QueryDate(dt).order_by("-dt")
-	d = data[:len(data)%15]
-	if len(data)%15 == 0 and len(data) >= 15:
-		d = data[:15]
+	d = data[:len(data)%20]
+	if len(data)%20 == 0 and len(data) >= 20:
+		d = data[:20]
 	last_data = json.loads(serializers.serialize("json", d))
 	summary = DataReport(dt)
 	if summary.get("data"):
