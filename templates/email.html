@@ -27,9 +27,10 @@
 </style>
 </head>
 <body>
-<h2>{{ date }}</h2>
+<h2>{{ title }}</h2>
 <h2>Report of Date :- {{ dt.date }} {{ st.From }}:00 to {{ edt.date }} {{ st.to }}:00</h2>
 
+{% if report %}
 <table id="customers">
   <thead class="thead-dark">
 	<tr>
@@ -79,6 +80,9 @@
 		{% endif %}
 	</tbody>
 </table>
+{% else %}
+<h2>There is not Data</h2>
+{% endif %}
 
 </body>
 </html>

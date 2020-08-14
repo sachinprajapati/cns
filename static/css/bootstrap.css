@@ -1675,7 +1675,7 @@ pre code {
 
 .table th,
 .table td {
-  padding: 0.75rem;
+  padding: 0.50rem;
   vertical-align: top;
   border-top: 1px solid #dee2e6;
 }
@@ -1695,7 +1695,7 @@ pre code {
 
 .table-sm th,
 .table-sm td {
-  padding: 0.3rem;
+  padding: 0.2rem;
 }
 
 .table-bordered {

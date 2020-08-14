@@ -23,7 +23,7 @@ def SendDataMail():
 	report = RatingReport(dt - timedelta(days=1))
 	to_send = MailStatus.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year)
 	emails = [e.email_id for e in Email.objects.all()]
-	if report and emails and not to_send:
+	if emails and not to_send:
 		m = Machine.objects.filter().first()
 		st = ShiftTime.objects.filter().first()
 		title = 'Line {} Machine {} Production Report'.format(m.line, m.get_machine_display())

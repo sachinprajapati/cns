@@ -17,12 +17,6 @@ import json
 import minimalmodbus
 
 def Homepage(request):
-	try:
-		instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) 
-	except Exception as e:
-		context = {
-			"errors": "No Communication",
-		}
 	dt = timezone.localtime()
 	context = DataReport(dt)
 	return render(request, "index.html", context)
@@ -64,15 +58,18 @@ def getStatus(request):
 	if dt.hour < 8:
 		dt = dt-timedelta(days=1)
 	data = QueryDate(dt).order_by("-dt")
-	d = data[:len(data)%10]
-	if len(data)%10 == 0 and len(data) >= 20:
-		d = data[:20]
-	print("total count: ", len(data), len(d))
+	d = data[:len(data)%15]
+	if len(data)%15 == 0 and len(data) >= 15:
+		d = data[:15]
 	last_data = json.loads(serializers.serialize("json", d))
 	summary = DataReport(dt)
 	if summary.get("data"):
 		summary.pop("data")
-	return JsonResponse({"data": [i['fields'] for i in last_data], "tcount": len(data)-len(d)+1, "summary": summary})
+	try:
+		instrument = minimalmodbus.Instrument('/dev/ttyS1', 1) 
+	except Exception as e:
+		plc_status = False
+	return JsonResponse({"data": [i['fields'] for i in last_data], "tcount": len(data)-len(d)+1, "summary": summary, "plc_status": plc_status})
 
 def ReportsMail(request):
 	context = {}
@@ -91,7 +88,6 @@ def ReportsMail(request):
 			edt = datetime.strptime(edt, "%Y-%m-%d")
 		elif etm:
 			edt = datetime.strptime(request.POST.get("date")+" "+etm, "%Y-%m-%d %H:%M")
-		print("dt is", dt, "end time",edt)
 		report = RatingReport(dt, edt)
 		emails = [e.email_id for e in Email.objects.all()]
 		if report and emails:
@@ -100,11 +96,7 @@ def ReportsMail(request):
 			msg_html = render_to_string('email.html', report)
 			plain_message = strip_tags(msg_html)
 			try:
-				send_mail(
-				'Daily Production Report',
-				plain_message,
-				'billgates@gmail.com',
-				emails,
+				send_mail('Daily Production Report', plain_message,'cnsharidwar@gmail.com', emails,
 				fail_silently=False,
 				html_message=msg_html)
 				context["form"] = False
