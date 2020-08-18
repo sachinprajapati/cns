@@ -16,11 +16,11 @@ from .models import *
 
 import time
 
-@periodic_task(run_every=crontab(minute=0, hour='8-20'))
+@periodic_task(run_every=crontab(minute=0, hour='8-22'))
 def SendDataMail():
 	print("sending mail")
 	dt = timezone.localtime()
-	report = RatingReport(dt - timedelta(days=1))
+	report = RatingReport(dt - timedelta(days=1), celery=True)
 	to_send = MailStatus.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year)
 	emails = [e.email_id for e in Email.objects.all()]
 	if emails and not to_send:
@@ -34,8 +34,8 @@ def SendDataMail():
 		if send_mail(title, plain_message, 'cnsharidwar@gmail.com',emails,
 			fail_silently=False,
 			html_message=msg_html):
-			m = MailStatus.objects.create()
-			m.save()
+			# m = MailStatus.objects.create()
+			# m.save()
 			print("mail sent")
 	else:
 		print("mail not sent")

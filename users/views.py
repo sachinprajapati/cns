@@ -36,7 +36,6 @@ def Reports(request):
 			edt = datetime.strptime(edt, "%Y-%m-%d")
 		elif etm:
 			edt = datetime.strptime(request.POST.get("date")+" "+etm, "%Y-%m-%d %H:%M")
-		print("dt is", dt, "end time",edt)
 		data = RatingReport(dt, edt)
 		return render(request, "reports.html", data)
 	context["form"] = True

@@ -61,20 +61,21 @@ def DataReport(dt, query=False, data=None):
 
 def QueryDate(dt, edt=None):
     next_dt = dt+timedelta(days=1)
-    # return Data.objects.filter(dt__day=dt.day, dt__month=dt.month, dt__year=dt.year)
-    print("dt, ",dt, "edt ", edt)
     if edt:
-        # return Data.objects.filter(dt__year=dt.year, dt__month=dt.month, dt__day__gte=dt.day, dt__day__lte=edt.day \
-        #     , Q(dt__hour__gte=dt.hour)&Q(dt__hour__lte=edt.hour), Q(dt__minute__gte=dt.minute)&Q(dt__minute__lte=edt.minute))
-        return Data.objects.filter(dt__gte=dt, dt__lte=edt)
-    st = ShiftTime.objects.filter().first()
-    return Data.objects.filter(Q(dt__gte="{} {}:00:00".format(dt.date(), st.From))&Q(dt__lte="{} {}:59:59".format(next_dt.date(), st.to-1)))
+        return Data.objects.filter(Q(dt__gte=dt)&Q(dt__lte=edt))
+    return Data.objects.filter(Q(dt__gte="{} {}:00:00".format(dt.date(), dt.hour))&Q(dt__lte="{} {}:59:59".format(next_dt.date(), next_dt.hour-1)))
 
-def RatingReport(dt, edt=None):
+def RatingReport(dt, edt=None, celery=False):
+    if celery:
+        st = ShiftTime.objects.filter().first()
+        dt = dt.replace(hour=st.From, minute=0, second=0)
     qdt = QueryDate(dt, edt)
-    if not qdt:
-        return {}
     d = {}
+    d["dt"] = dt
+    if not edt:
+        d["edt"] = dt + timedelta(days=1)
+    if not qdt:
+        return d
     data = qdt.values("rating").annotate(Count("rating"))
     for i in data:
         i["report"] = DataReport(dt, query=True, data=qdt.filter(rating=i["rating"]))
@@ -84,6 +85,4 @@ def RatingReport(dt, edt=None):
     d["data"] = qdt
     d["report"] = data
     d["dt"] = dt
-    if not edt:
-        d["edt"] = dt + timedelta(days=1)
     return d
