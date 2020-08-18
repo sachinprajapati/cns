@@ -63,7 +63,8 @@ def QueryDate(dt, edt=None):
     next_dt = dt+timedelta(days=1)
     if edt:
         return Data.objects.filter(Q(dt__gte=dt)&Q(dt__lte=edt))
-    return Data.objects.filter(Q(dt__gte="{} {}:00:00".format(dt.date(), dt.hour))&Q(dt__lte="{} {}:59:59".format(next_dt.date(), next_dt.hour-1)))
+    next_dt = next_dt - timedelta(hours=1)
+    return Data.objects.filter(Q(dt__gte="{} {}:00:00".format(dt.date(), dt.hour))&Q(dt__lte="{} {}:59:59".format(next_dt.date(), next_dt.hour)))
 
 def RatingReport(dt, edt=None, celery=False):
     if celery:
