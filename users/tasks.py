@@ -34,8 +34,8 @@ def SendDataMail():
 		if send_mail(title, plain_message, 'cnsharidwar@gmail.com',emails,
 			fail_silently=False,
 			html_message=msg_html):
-			# m = MailStatus.objects.create()
-			# m.save()
+			m = MailStatus.objects.create()
+			m.save()
 			print("mail sent")
 	else:
 		print("mail not sent")
