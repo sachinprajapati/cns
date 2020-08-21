@@ -53,8 +53,10 @@ def Summary(request):
 
 def getStatus(request):
 	dt = timezone.localtime()
+	st = ShiftTime.objects.filter().first()
 	if dt.hour < 8:
 		dt = dt-timedelta(days=1)
+	dt = dt.replace(hour=st.From, minute=0, second=0)
 	data = QueryDate(dt).order_by("-dt")
 	d = data[:len(data)%20]
 	if len(data)%20 == 0 and len(data) >= 20:
